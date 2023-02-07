@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:bmi_calculator/constants.dart';
+import 'package:bmi_calculator/reusable_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'widgets.dart';
+import 'reusable_card.dart';
 
-const bottomContainerHeight = 70.0;
-const activeCardColor = Color(0xFF1D1E33);
-const inactiveCardColor = Color(0xFF111328);
-const activeBottomContainerColor = Color(0xFFEB1555);
+enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
@@ -17,29 +16,10 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColor = inactiveCardColor;
-  Color femaleCardColor = inactiveCardColor;
   int weightCounter = 60;
   int ageCount = 30;
-
-  void updateColor(int gender) {
-    if (gender == 1) {
-      if (maleCardColor == inactiveCardColor) {
-        maleCardColor = activeCardColor;
-        femaleCardColor = inactiveCardColor;
-      } else {
-        maleCardColor = inactiveCardColor;
-      }
-    }
-    if (gender == 2) {
-      if (femaleCardColor == inactiveCardColor) {
-        femaleCardColor = activeCardColor;
-        maleCardColor = inactiveCardColor;
-      } else {
-        femaleCardColor = inactiveCardColor;
-      }
-    }
-  }
+  int heightCount = 180;
+  Gender? selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -49,39 +29,40 @@ class _InputPageState extends State<InputPage> {
         centerTitle: true,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ReusableCard(
+                    onPress: () {
                       setState(() {
-                        updateColor(1);
+                        selectedGender = Gender.male;
                       });
                     },
-                    child: ReusableCard(
-                      cardColor: maleCardColor,
-                      cardChild: IconWidget(
-                        genderIcon: FontAwesomeIcons.mars,
-                        genderText: 'MALE',
-                      ),
+                    cardColor: selectedGender == Gender.male
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
+                    cardChild: IconWidget(
+                      genderIcon: FontAwesomeIcons.mars,
+                      genderText: 'MALE',
                     ),
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ReusableCard(
+                    onPress: () {
                       setState(() {
-                        updateColor(2);
+                        selectedGender = Gender.female;
                       });
                     },
-                    child: ReusableCard(
-                      cardColor: femaleCardColor,
-                      cardChild: IconWidget(
-                        genderIcon: FontAwesomeIcons.venus,
-                        genderText: 'FEMALE',
-                      ),
+                    cardColor: selectedGender == Gender.female
+                        ? kActiveCardColor
+                        : kInactiveCardColor,
+                    cardChild: IconWidget(
+                      genderIcon: FontAwesomeIcons.venus,
+                      genderText: 'FEMALE',
                     ),
                   ),
                 ),
@@ -93,37 +74,47 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                    cardColor: activeCardColor,
+                    cardColor: kActiveCardColor,
                     cardChild: Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Column(
                         children: [
                           Text(
                             'HEIGHT',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Color(0xFF8D8E98),
-                            ),
+                            style: kLabelText,
                             textAlign: TextAlign.center,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline
+                                .alphabetic, //align all the alphabets in same line
                             children: [
                               Text(
-                                '180',
-                                style: TextStyle(
-                                  fontSize: 60.0,
-                                ),
+                                heightCount.toString(),
+                                style: kLabelNumber,
                               ),
                               Text(
                                 'cm',
                                 style: TextStyle(
                                   fontSize: 30.0,
                                   color: Color(0xFF8D8E98),
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ],
+                          ),
+                          Slider(
+                            activeColor: kActiveSliderColor,
+                            inactiveColor: kInactiveSliderColor,
+                            value: heightCount.toDouble(),
+                            min: 120.0,
+                            max: 220.0,
+                            onChanged: (double newValue) {
+                              setState(() {
+                                heightCount = newValue.round();
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -138,7 +129,7 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                    cardColor: activeCardColor,
+                    cardColor: kActiveCardColor,
                     cardChild: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Column(
@@ -146,18 +137,12 @@ class _InputPageState extends State<InputPage> {
                         children: [
                           Text(
                             'WEIGHT',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Color(0xFF8D8E98),
-                            ),
+                            style: kLabelText,
                             textAlign: TextAlign.center,
                           ),
                           Text(
                             weightCounter.toString(),
-                            style: TextStyle(
-                              fontSize: 70.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: kLabelNumber,
                           ),
                           SizedBox(
                             height: 8.0,
@@ -166,7 +151,7 @@ class _InputPageState extends State<InputPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FloatingActionButton(
-                                backgroundColor: inactiveCardColor,
+                                backgroundColor: kInactiveCardColor,
                                 onPressed: () {
                                   setState(() {
                                     ++weightCounter;
@@ -179,7 +164,7 @@ class _InputPageState extends State<InputPage> {
                                 ),
                               ),
                               FloatingActionButton(
-                                backgroundColor: inactiveCardColor,
+                                backgroundColor: kInactiveCardColor,
                                 onPressed: () {
                                   setState(() {
                                     --weightCounter;
@@ -200,7 +185,7 @@ class _InputPageState extends State<InputPage> {
                 ),
                 Expanded(
                   child: ReusableCard(
-                    cardColor: activeCardColor,
+                    cardColor: kActiveCardColor,
                     cardChild: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Column(
@@ -208,18 +193,12 @@ class _InputPageState extends State<InputPage> {
                         children: [
                           Text(
                             'AGE',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Color(0xFF8D8E98),
-                            ),
+                            style: kLabelText,
                             textAlign: TextAlign.center,
                           ),
                           Text(
                             ageCount.toString(),
-                            style: TextStyle(
-                              fontSize: 70.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: kLabelNumber,
                           ),
                           SizedBox(
                             height: 8.0,
@@ -228,7 +207,7 @@ class _InputPageState extends State<InputPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FloatingActionButton(
-                                backgroundColor: inactiveCardColor,
+                                backgroundColor: kInactiveCardColor,
                                 onPressed: () {
                                   setState(() {
                                     ++ageCount;
@@ -241,7 +220,7 @@ class _InputPageState extends State<InputPage> {
                                 ),
                               ),
                               FloatingActionButton(
-                                backgroundColor: inactiveCardColor,
+                                backgroundColor: kInactiveCardColor,
                                 onPressed: () {
                                   setState(() {
                                     --ageCount;
@@ -264,10 +243,10 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Container(
-            color: activeBottomContainerColor,
+            color: kActiveBottomContainerColor,
             margin: EdgeInsets.only(top: 10.0),
             width: double.infinity,
-            height: bottomContainerHeight,
+            height: kBottomContainerHeight,
             child: Center(
               child: Text(
                 'CALCULATE YOUR BMI',
