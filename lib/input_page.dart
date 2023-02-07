@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/reusable_icon_widget.dart';
+import 'package:bmi_calculator/round_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'reusable_card.dart';
@@ -104,17 +105,27 @@ class _InputPageState extends State<InputPage> {
                               ),
                             ],
                           ),
-                          Slider(
-                            activeColor: kActiveSliderColor,
-                            inactiveColor: kInactiveSliderColor,
-                            value: heightCount.toDouble(),
-                            min: 120.0,
-                            max: 220.0,
-                            onChanged: (double newValue) {
-                              setState(() {
-                                heightCount = newValue.round();
-                              });
-                            },
+                          SliderTheme(
+                            data: SliderTheme.of(context).copyWith(
+                              activeTrackColor: Colors.white,
+                              inactiveTrackColor: kInactiveSliderColor,
+                              thumbColor: kThumbColor,
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 15.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 30.0),
+                              overlayColor: kOverlayThumbColor,
+                            ),
+                            child: Slider(
+                              value: heightCount.toDouble(),
+                              min: 120.0,
+                              max: 220.0,
+                              onChanged: (double newValue) {
+                                setState(() {
+                                  heightCount = newValue.round();
+                                });
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -148,33 +159,26 @@ class _InputPageState extends State<InputPage> {
                             height: 8.0,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FloatingActionButton(
-                                backgroundColor: kInactiveCardColor,
-                                onPressed: () {
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPress: () {
                                   setState(() {
                                     ++weightCounter;
                                   });
                                 },
-                                child: Icon(
-                                  Icons.add,
-                                  size: 40.0,
-                                  color: Colors.white,
-                                ),
                               ),
-                              FloatingActionButton(
-                                backgroundColor: kInactiveCardColor,
-                                onPressed: () {
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPress: () {
                                   setState(() {
                                     --weightCounter;
                                   });
                                 },
-                                child: Icon(
-                                  Icons.horizontal_rule,
-                                  size: 40.0,
-                                  color: Colors.white,
-                                ),
                               ),
                             ],
                           ),
@@ -204,33 +208,26 @@ class _InputPageState extends State<InputPage> {
                             height: 8.0,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FloatingActionButton(
-                                backgroundColor: kInactiveCardColor,
-                                onPressed: () {
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPress: () {
                                   setState(() {
                                     ++ageCount;
                                   });
                                 },
-                                child: Icon(
-                                  Icons.add,
-                                  size: 40.0,
-                                  color: Colors.white,
-                                ),
                               ),
-                              FloatingActionButton(
-                                backgroundColor: kInactiveCardColor,
-                                onPressed: () {
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPress: () {
                                   setState(() {
                                     --ageCount;
                                   });
                                 },
-                                child: Icon(
-                                  Icons.horizontal_rule,
-                                  size: 40.0,
-                                  color: Colors.white,
-                                ),
                               ),
                             ],
                           ),
