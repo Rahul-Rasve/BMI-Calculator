@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
+import 'package:bmi_calculator/calculated_result.dart';
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/reusable_icon_widget.dart';
 import 'package:bmi_calculator/round_icon_button.dart';
@@ -239,21 +240,34 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kActiveBottomContainerColor,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-            child: Center(
-              child: Text(
-                'CALCULATE YOUR BMI',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  letterSpacing: 1.0,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                calculateBMI(weightCounter.toDouble(), heightCount.toDouble());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalculatedResult(),
+                  ),
+                );
+              });
+            },
+            child: Container(
+              color: kActiveBottomContainerColor,
+              margin: EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              height: kBottomContainerHeight,
+              child: Center(
+                child: Text(
+                  'CALCULATE YOUR BMI',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    letterSpacing: 1.0,
+                  ),
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
