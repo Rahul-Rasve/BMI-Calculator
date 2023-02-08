@@ -1,6 +1,6 @@
 # BMI Caluculator
 
-A new Flutter project.
+Calculate your BMI and set your daily goals.
 
 ## Getting Started
 
