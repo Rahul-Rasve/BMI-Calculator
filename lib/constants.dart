@@ -57,7 +57,7 @@ Widget decideType(double kResult) {
   } else {
     kMessageString = 'You are Over Weight. You Need to Work Harder!';
     kTypeString = 'Over Weight';
-    kBmiRange = '25 - 40';
+    kBmiRange = '25 - Above';
     return Text(
       kTypeString,
       style: TextStyle(

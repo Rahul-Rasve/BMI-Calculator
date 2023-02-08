@@ -5,6 +5,7 @@ import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/reusable_icon_widget.dart';
 import 'package:bmi_calculator/round_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'reusable_card.dart';
 
@@ -243,13 +244,21 @@ class _InputPageState extends State<InputPage> {
           GestureDetector(
             onTap: () {
               setState(() {
-                calculateBMI(weightCounter.toDouble(), heightCount.toDouble());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CalculatedResult(),
-                  ),
-                );
+                if (selectedGender != null) {
+                  calculateBMI(
+                      weightCounter.toDouble(), heightCount.toDouble());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CalculatedResult(),
+                    ),
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: 'Select your Gender',
+                    backgroundColor: kInactiveCardColor,
+                  );
+                }
               });
             },
             child: Container(
