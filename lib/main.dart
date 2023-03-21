@@ -14,6 +14,7 @@ class BmiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
         '/input': (context) => InputPage(),
         '/calculate': (context) => CalculatedResult(),
